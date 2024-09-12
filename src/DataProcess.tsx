@@ -1,39 +1,62 @@
+/**
+ * Represents a single data item from a device, with a type and a value.
+ */
 export type DataItem = {
-  type: string;
-  value: number;
+  type: string; // The type of data (e.g., load, temperature)
+  value: number; // The value associated with the data type
 };
 
+/**
+ * Represents the inbound data from a device, consisting of a deviceId and the actual data.
+ */
 export type InboundData = {
-  deviceId: string;
-  data: DataItem;
+  deviceId: string; // Unique identifier for the device
+  data: DataItem; // The actual data item for this device
 };
 
+/**
+ * Defines upper and lower thresholds for a given type of data.
+ */
 export type Thresholds = {
-  upper: number;
-  lower: number;
+  upper: number; // Upper threshold value
+  lower: number; // Lower threshold value
 };
 
+/**
+ * Represents the profile for a particular type of data, including thresholds and the window size.
+ */
 export type ProfileItem = {
-  type: string;
-  thresholds: Thresholds;
-  window: number;
+  type: string; // The type of data (e.g., load, temperature)
+  thresholds: Thresholds; // Thresholds for the type of data
+  window: number;   // The number of consecutive values that must exceed the threshold to trigger an event
 };
 
+/**
+ * Represents the profile of a device, including its deviceId and a list of profile items.
+ */
 export type DeviceProfile = {
-  deviceId: string;
-  profiles: ProfileItem[];
+  deviceId: string; // Unique identifier for the device
+  profiles: ProfileItem[]; // List of profile items for this device
 };
 
+/**
+ * Represents the current state of a device, including active window count and event count.
+ */
 export type DeviceState = {
   activeWindow: number; // Counts consecutive values outside the threshold
   eventCount: number; // Number of triggered events
 };
-
+/**
+ * Class responsible for processing device data, checking for anomalies, and tracking event counts.
+ */
 export class DeviceEventProcessor {
   private deviceProfiles: Map<string, ProfileItem[]> = new Map();
   private deviceStates: Map<string, DeviceState> = new Map();
 
-  // Simulated method to fetch device profiles
+  /**
+   * Simulates the fetching of device profiles from an external source (e.g., server).
+   * This method initializes device profiles with thresholds and windows.
+   */
   fetchDeviceProfiles(): void {
     const profiles: DeviceProfile[] = [
       {
@@ -55,7 +78,12 @@ export class DeviceEventProcessor {
     });
   }
 
-  // Process the inbound data stream
+  /**
+   * Processes the incoming data for multiple devices, checking against the profiles
+   * to see if any thresholds are exceeded and updating device states accordingly.
+   *
+   * @param inboundData - Array of data points from devices
+   */
   processData(inboundData: InboundData[]): void {
     inboundData.forEach((data) => {
       const { deviceId, data: sensorData } = data;
@@ -79,7 +107,15 @@ export class DeviceEventProcessor {
     });
   }
 
-  // Check for anomalies in the sensor data and trigger events
+  /**
+   * Checks if the data from the sensor exceeds the thresholds for a given profile.
+   * If the data exceeds the thresholds for a consecutive number of times (based on the window),
+   * an event is triggered and the event count is incremented.
+   *
+   * @param deviceId - Unique identifier for the device
+   * @param sensorData - Data from the device's sensor
+   * @param profile - The profile containing thresholds and window size
+   */
   private checkForAnomalies(
     deviceId: string,
     sensorData: DataItem,
@@ -106,7 +142,12 @@ export class DeviceEventProcessor {
     }
   }
 
-  // Output the devices sorted by the number of events triggered
+  /**
+   * Returns a sorted list of device IDs and their event counts in descending order
+   * based on the number of events triggered.
+   *
+   * @returns Array of tuples with deviceId and eventCount
+   */
   getSortedEvents(): [string, number][] {
     return Array.from(this.deviceStates.entries())
       .map(([deviceId, state]) => [deviceId, state.eventCount] as [string, number])

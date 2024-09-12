@@ -1,9 +1,12 @@
 /* eslint-disable */
 /* eslint-env es6 */
-import React from 'react';
 import './App.css';
-import DeviceEventsDashboard from './DisplayData.tsx'; // Import your component
+import DeviceEventsDashboard from './DisplayData'; // Import the dashboard component
 
+/**
+ * Main component for the Device Event Monitoring App.
+ * It renders the DisplayData component, which shows a dashboard with device event counts.
+ */
 function App() {
   return (
     <div className="App">

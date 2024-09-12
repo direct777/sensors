@@ -68,3 +68,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Assignment 3
+
+There is code with comprehensive comments using standard documentation practices, including JSDoc for function and class documentation.
+
+### Assignment 4
+
+There is standart test environment (jest for react) set up. To run tests use command 'npm test'.

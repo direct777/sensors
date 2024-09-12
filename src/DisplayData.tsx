@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { DeviceEventProcessor, InboundData } from './DataProcess';
 
+/**
+ * Component that displays a table of devices and the number of events they have triggered.
+ * It simulates incoming data from devices, processes it through DeviceEventProcessor, and
+ * displays the results in a dashboard format.
+ */
 const DisplayData: React.FC = () => {
-  // Simulate processing inbound data (this could be dynamic in real applications)
+  // Simulated inbound data for devices (this could be dynamic in real applications)
   const inboundData: InboundData[] = [
     { deviceId: "abc", data: { type: "load", value: 85 } },
     { deviceId: "abc", data: { type: "load", value: 90 } },
@@ -13,16 +18,17 @@ const DisplayData: React.FC = () => {
     { deviceId: "abc", data: { type: "load", value: 90 } },
   ];
 
-  // State to store the sorted event counts
+  // State to store the sorted event counts for devices
   const [sortedEvents, setSortedEvents] = useState<[string, number][]>([]);
 
   useEffect(() => {
+    // Initialize the processor, fetch profiles, process data, and set the sorted event counts
     const processor = new DeviceEventProcessor();
     processor.fetchDeviceProfiles();
     processor.processData(inboundData);
     const events = processor.getSortedEvents();
     setSortedEvents(events);
-  }, []);
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
